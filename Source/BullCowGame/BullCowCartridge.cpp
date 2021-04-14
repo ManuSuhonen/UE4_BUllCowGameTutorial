@@ -20,7 +20,21 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
         setupGame();
         return;
     }
+    procesInput(Input);
+    
+} 
 
+
+void UBullCowCartridge::setupGame()
+{
+    this->lives = 5;
+	this->bGameOver = false;
+    ClearScreen();
+    PrintLine("welcome to bull cow game");
+}
+
+void UBullCowCartridge::procesInput(const FString& Input)
+{
     if(Input.Len() == 0)
     {
         PrintLine("Please type in your guess");
@@ -46,14 +60,4 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
             this->bGameOver = true;
         }
     }
-} 
-
-
-void UBullCowCartridge::setupGame()
-{
-    this->lives = 5;
-	this->bGameOver = false;
-    ClearScreen();
-    PrintLine("welcome to bull cow game");
 }
-

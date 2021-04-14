@@ -18,6 +18,7 @@ class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 	virtual void OnInput(const FString& Input) override;
 
 	void setupGame();
+	void procesInput(const FString& Input);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hidden Word")
 	FString Hiddenword;
