@@ -6,7 +6,6 @@
 #include "Console/Cartridge.h"
 #include "BullCowCartridge.generated.h"
 
-#define TEST 123
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class BULLCOWGAME_API UBullCowCartridge : public UCartridge
@@ -18,14 +17,18 @@ class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 	virtual void BeginPlay() override;
 	virtual void OnInput(const FString& Input) override;
 
+	void setupGame();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hidden Word")
 	FString Hiddenword;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Manu")
-	TArray<int32> Intvec;
+	// UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="test vector")
+	// TArray<int32> test_vector;
 
 	// Your declarations go below!
 	private:
+	int32 lives = 5;
+	bool bGameOver;
 	
 };
 

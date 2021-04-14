@@ -11,20 +11,41 @@ void UBullCowCartridge::BeginPlay() // When the game starts
 
 void UBullCowCartridge::OnInput(const FString& Input) // When the player hits enter
 {
-    int32 t = TEST;
+    this->ClearScreen();
+
+    if(bGameOver == true)
+    {
+        PrintLine("presss enter to start new game");
+    }
+
     if(Input == Hiddenword)
     {
-        PrintLine("YAY YOU GOT IT RIGHT");
+        PrintLine("YAY YOU GOT IT prooooper");
+        this->bGameOver = true;
+        setupGame();
     }
 
     else
     {
-        const auto Temp = FString::Printf(TEXT("NOPE WRONG ANSWER %s"),*Hiddenword);
+        lives--;
+        const auto Temp = FString::Printf(TEXT("WRONG ANSWER,you have %d lives left %s"),lives,*Hiddenword);
         PrintLine(Temp);
-
-
+        if(lives == 0)
+        {
+            PrintLine("you have lost, press enter to start new game");
+            this->bGameOver = true;
+            setupGame();
+        }
     }
-    
 } 
+
+
+void UBullCowCartridge::setupGame()
+{
+    this->lives = 5;
+	this->bGameOver = false;
+    ClearScreen();
+    PrintLine("welcome to bull cow game");
+}
 
 
