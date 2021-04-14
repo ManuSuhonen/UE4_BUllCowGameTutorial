@@ -5,6 +5,7 @@
 void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
+    PrintLine("welcome to bull cow game");
     //Hiddenword = TEXT("HOUSE");
 
 }
@@ -15,26 +16,34 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
 
     if(bGameOver == true)
     {
-        PrintLine("presss enter to start new game");
+        PrintLine("Press enter to start new game");
+        setupGame();
+        return;
     }
+
+    if(Input.Len() == 0)
+    {
+        PrintLine("Please type in your guess");
+        return;
+    }
+
 
     if(Input == Hiddenword)
     {
-        PrintLine("YAY YOU GOT IT prooooper");
+        PrintLine("YAY you got it right,\npress enter to start new game");
         this->bGameOver = true;
-        setupGame();
+        
     }
 
     else
     {
         lives--;
-        const auto Temp = FString::Printf(TEXT("WRONG ANSWER,you have %d lives left %s"),lives,*Hiddenword);
+        const auto Temp = FString::Printf(TEXT("Wrong answer,you have %d lives left %s"),lives,*Hiddenword);
         PrintLine(Temp);
         if(lives == 0)
         {
-            PrintLine("you have lost, press enter to start new game");
+            PrintLine("You have lost,\npress enter to start new game");
             this->bGameOver = true;
-            setupGame();
         }
     }
 } 
@@ -47,5 +56,4 @@ void UBullCowCartridge::setupGame()
     ClearScreen();
     PrintLine("welcome to bull cow game");
 }
-
 
