@@ -1,11 +1,14 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "BullCowCartridge.h"
+#include "HiddenWordList.h"
 
 
 void UBullCowCartridge::BeginPlay() // When the game starts
 {
     Super::BeginPlay();
-    PrintLine("welcome to bull cow game");
+    setupGame();
+   // PrintLine("welcome to bull cow game");
+   // Hiddenword = WordList[FMath::RandRange(0, WordList.Num())];
     //Hiddenword = TEXT("HOUSE");
 
 }
@@ -14,6 +17,7 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
 {
     this->ClearScreen();
 
+
     if(bGameOver == true)
     {
         PrintLine("Press enter to start new game");
@@ -21,17 +25,14 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
         return;
     }
     procesInput(Input);
-
-    if(FApp::GetBuildConfiguration() == EBuildConfiguration::Unknown)
-    {
-        
-    }
-    
 } 
 
 
 void UBullCowCartridge::setupGame()
 {
+    int32 index = FMath::RandRange(0, WordList.Num()-1);
+    Hiddenword = WordList[index];
+    //PrintLine(FString::Printf(TEXT("you have %i"),index));
     this->lives = 5;
 	this->bGameOver = false;
     ClearScreen();
@@ -58,13 +59,12 @@ void UBullCowCartridge::procesInput(const FString& Input)
     {
         PrintLine("YAY you got it right,\npress enter to start new game");
         this->bGameOver = true;
-        
     }
 
     else
     {
         lives--;
-        const auto Temp = FString::Printf(TEXT("Wrong answer,you have %d lives left %s"),lives,*Hiddenword);
+        const auto Temp = FString::Printf(TEXT("Wrong answer,you have %i lives left %s"),lives,*Hiddenword);
         PrintLine(Temp);
         if(lives == 0)
         {
@@ -75,7 +75,7 @@ void UBullCowCartridge::procesInput(const FString& Input)
 }
 
 
-bool UBullCowCartridge::isIsoGram(const FString& Input)
+bool UBullCowCartridge::isIsoGram(const FString& Input) const
 {
     auto temp = Input.ToLower();
 
@@ -89,5 +89,7 @@ bool UBullCowCartridge::isIsoGram(const FString& Input)
             }
         }
     }
+
+    
     return true;
 }
