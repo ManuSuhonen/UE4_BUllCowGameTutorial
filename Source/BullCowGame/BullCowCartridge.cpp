@@ -21,6 +21,11 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
         return;
     }
     procesInput(Input);
+
+    if(FApp::GetBuildConfiguration() == EBuildConfiguration::Unknown)
+    {
+        
+    }
     
 } 
 
@@ -35,12 +40,19 @@ void UBullCowCartridge::setupGame()
 
 void UBullCowCartridge::procesInput(const FString& Input)
 {
+    PrintLine(Input);
+
     if(Input.Len() == 0)
     {
         PrintLine("Please type in your guess");
         return;
     }
 
+    if(!isIsoGram(Input))
+    {
+        PrintLine("input isn't an isogram");
+        return;
+    }
 
     if(Input == Hiddenword)
     {
@@ -60,4 +72,22 @@ void UBullCowCartridge::procesInput(const FString& Input)
             this->bGameOver = true;
         }
     }
+}
+
+
+bool UBullCowCartridge::isIsoGram(const FString& Input)
+{
+    auto temp = Input.ToLower();
+
+    for (size_t i = 0; i < temp.Len()-1; i++)
+    {
+        for (size_t i2 = i+1; i2 < temp.Len(); i2++)
+        {
+            if(temp[i] == temp[i2])
+            {
+                return false;
+            }
+        }
+    }
+    return true;
 }
