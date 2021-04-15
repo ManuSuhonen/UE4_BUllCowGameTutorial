@@ -1,10 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "BullCowCartridge.h"
-#include "HiddenWordList.h"
+//#include "HiddenWordList.h"
 
 
 void UBullCowCartridge::BeginPlay() // When the game starts
 {
+    
+
     Super::BeginPlay();
     setupGame();
    // PrintLine("welcome to bull cow game");
@@ -30,9 +32,13 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
 
 void UBullCowCartridge::setupGame()
 {
-    int32 index = FMath::RandRange(0, WordList.Num()-1);
-    Hiddenword = WordList[index];
-    //PrintLine(FString::Printf(TEXT("you have %i"),index));
+    FJsonSerializableArray Result;
+    const FString WordListPath = FPaths::ProjectContentDir() / TEXT("WordLists/isogram_word_list.txt");
+    FFileHelper::LoadFileToStringArray(Result, *WordListPath);
+
+    int32 index = FMath::RandRange(0, Result.Num()-1);
+    UE_LOG(LogTemp, Display, TEXT("loaded random name from file: %s"),*(Result[index]));
+    Hiddenword = Result[index];
     this->lives = 5;
 	this->bGameOver = false;
     ClearScreen();
