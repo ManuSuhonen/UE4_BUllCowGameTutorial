@@ -37,10 +37,11 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
 void UBullCowCartridge::setupGame()
 {
     
-    Hiddenword = getValidWord();
+    
     this->lives = 5;
 	this->bGameOver = false;
     level = 4;
+    Hiddenword = getValidWord();
     ClearScreen();
     PrintLine("Welcome to bull cow game.");
     PrintLine(TEXT("Please guess a %i letter word.\nYou have %i lives left "),Hiddenword.Len(),lives);
@@ -49,7 +50,11 @@ void UBullCowCartridge::setupGame()
 
 void UBullCowCartridge::procesInput(const FString& Input)
 {
-    PrintLine(Input);
+    //PrintLine(Input);
+    if(this->bGameOver == true)
+    {
+        this->setupGame();
+    }
 
     if(Input.Len() == 0)
     {
@@ -65,8 +70,18 @@ void UBullCowCartridge::procesInput(const FString& Input)
 
     if(Input == Hiddenword)
     {
-        PrintLine("Yay you got it right!!\nPress enter to start new game");
-        this->bGameOver = true;
+        
+
+        if(this->level < 7)
+        {
+            level++;
+            nextLevel();
+        }
+        else
+        {
+            PrintLine("Yay you got it all correct!!\nPress enter to start new game");
+            this->bGameOver = true;
+        }
     }
 
     else
@@ -116,6 +131,13 @@ FString UBullCowCartridge::getValidWord()
 
     int32 index = FMath::RandRange(0, tempstrarr.Num()-1);
     UE_LOG(LogTemp, Display, TEXT("loaded random name from file: %s"),*(tempstrarr[index]));
-    level++;
     return tempstrarr[index];
+}
+
+
+void UBullCowCartridge::nextLevel()
+{
+    Hiddenword = getValidWord();
+    ClearScreen();
+    PrintLine(TEXT("Please guess a %i letter word.\nYou have %i lives left "),Hiddenword.Len(),lives);
 }
