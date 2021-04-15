@@ -8,6 +8,10 @@ void UBullCowCartridge::BeginPlay() // When the game starts
     
 
     Super::BeginPlay();
+
+    const FString WordListPath = FPaths::ProjectContentDir() / TEXT("WordLists/isogram_word_list.txt");
+    FFileHelper::LoadFileToStringArray(Result, *WordListPath);
+
     setupGame();
    // PrintLine("welcome to bull cow game");
    // Hiddenword = WordList[FMath::RandRange(0, WordList.Num())];
@@ -32,13 +36,8 @@ void UBullCowCartridge::OnInput(const FString& Input) // When the player hits en
 
 void UBullCowCartridge::setupGame()
 {
-    FJsonSerializableArray Result;
-    const FString WordListPath = FPaths::ProjectContentDir() / TEXT("WordLists/isogram_word_list.txt");
-    FFileHelper::LoadFileToStringArray(Result, *WordListPath);
-
-    int32 index = FMath::RandRange(0, Result.Num()-1);
-    UE_LOG(LogTemp, Display, TEXT("loaded random name from file: %s"),*(Result[index]));
-    Hiddenword = Result[index];
+    
+    Hiddenword = getValidWord();
     this->lives = 5;
 	this->bGameOver = false;
     ClearScreen();
@@ -98,4 +97,25 @@ bool UBullCowCartridge::isIsoGram(const FString& Input) const
 
     
     return true;
+}
+
+
+FString UBullCowCartridge::getValidWord()
+{
+    static int32 level = 4;
+    TArray<FString> tempstrarr;
+    
+
+    for(auto t: Result)
+    {
+        if(t.Len() == level)
+        {
+            tempstrarr.Emplace(t);
+        }
+    }
+
+    int32 index = FMath::RandRange(0, tempstrarr.Num()-1);
+    UE_LOG(LogTemp, Display, TEXT("loaded random name from file: %s"),*(tempstrarr[index]));
+    level++;
+    return tempstrarr[index];
 }
