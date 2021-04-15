@@ -31,6 +31,7 @@ class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 	// Your declarations go below!
 	private:
 	int32 lives = 5;
+	int32 level = 4;
 	bool bGameOver;
 	FJsonSerializableArray Result;
 };

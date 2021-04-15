@@ -40,8 +40,11 @@ void UBullCowCartridge::setupGame()
     Hiddenword = getValidWord();
     this->lives = 5;
 	this->bGameOver = false;
+    level = 4;
     ClearScreen();
-    PrintLine("welcome to bull cow game");
+    PrintLine("Welcome to bull cow game.");
+    PrintLine(TEXT("Please guess a %i letter word.\nYou have %i lives left "),Hiddenword.Len(),lives);
+
 }
 
 void UBullCowCartridge::procesInput(const FString& Input)
@@ -62,18 +65,18 @@ void UBullCowCartridge::procesInput(const FString& Input)
 
     if(Input == Hiddenword)
     {
-        PrintLine("YAY you got it right,\npress enter to start new game");
+        PrintLine("Yay you got it right!!\nPress enter to start new game");
         this->bGameOver = true;
     }
 
     else
     {
         lives--;
-        const auto Temp = FString::Printf(TEXT("Wrong answer,you have %i lives left %s"),lives,*Hiddenword);
-        PrintLine(Temp);
+        PrintLine(TEXT("Wrong answer,you have %i lives left"),lives);
+
         if(lives == 0)
         {
-            PrintLine("You have lost,\npress enter to start new game");
+            PrintLine("You have lost,\nPress enter to start new game");
             this->bGameOver = true;
         }
     }
@@ -102,10 +105,7 @@ bool UBullCowCartridge::isIsoGram(const FString& Input) const
 
 FString UBullCowCartridge::getValidWord()
 {
-    static int32 level = 4;
     TArray<FString> tempstrarr;
-    
-
     for(auto t: Result)
     {
         if(t.Len() == level)
