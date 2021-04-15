@@ -68,6 +68,12 @@ void UBullCowCartridge::procesInput(const FString& Input)
         return;
     }
 
+    if(Input.Len() != Hiddenword.Len())
+    {
+        PrintLine(TEXT("Please type in %i characters"),Hiddenword.Len());
+        return;
+    }
+
     if(Input == Hiddenword)
     {
         
@@ -88,6 +94,8 @@ void UBullCowCartridge::procesInput(const FString& Input)
     {
         lives--;
         PrintLine(TEXT("Wrong answer,you have %i lives left"),lives);
+
+        bullCowLogic(Input);
 
         if(lives == 0)
         {
@@ -140,4 +148,36 @@ void UBullCowCartridge::nextLevel()
     Hiddenword = getValidWord();
     ClearScreen();
     PrintLine(TEXT("Please guess a %i letter word.\nYou have %i lives left "),Hiddenword.Len(),lives);
+}
+
+void UBullCowCartridge::bullCowLogic(const FString& Input)
+{
+    if(lives != 0)
+        {
+            int32 bulls = 0;
+            int32 cows = 0;
+
+            for (size_t i = 0; i < Input.Len(); i++)
+            {
+                if(Input[i] == Hiddenword[i]) 
+                {
+                    bulls++;
+                }
+            }
+
+            for (size_t i = 0; i < Hiddenword.Len(); i++)
+            {
+                for (size_t i2 = 0; i2 < Input.Len(); i2++)
+                {
+                    if(i == i2)continue;
+
+                    if(Hiddenword[i] == Input[i2])
+                    {
+                        cows++;
+                    }
+                }
+            }
+
+            PrintLine(TEXT("you have %i bulls and %i cows"),bulls, cows);
+        }
 }

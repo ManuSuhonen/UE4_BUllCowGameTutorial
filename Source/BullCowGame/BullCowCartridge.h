@@ -22,6 +22,7 @@ class BULLCOWGAME_API UBullCowCartridge : public UCartridge
 	bool isIsoGram(const FString& Input) const;
 	void nextLevel();
 	FString getValidWord();
+	void bullCowLogic(const FString& Input);
 
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Hidden Word")
 	FString Hiddenword;
